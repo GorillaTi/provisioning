@@ -67,14 +67,14 @@ f_install_php() {
             sudo yum module install -y php:remi-8.1
         ;;
         2)
-        echo "Intalando repositorio Sury para PHP";
-        echo "Paquetes adicionales";
-         sudo apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2;
-        echo "Adicionando repositorio Sury";
-        echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list;
-        echo "Adicionando GPG key";
-        curl -fsSL  https://packages.sury.org/php/apt.gpg| sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg;
-        echo "Instalando PHP y modulos adicionales";
+            echo "Intalando repositorio Sury para PHP";
+            echo "Paquetes adicionales";
+            sudo apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2;
+            echo "Adicionando repositorio Sury";
+            echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list;
+            echo "Adicionando GPG key";
+            curl -fsSL  https://packages.sury.org/php/apt.gpg| sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg;
+            echo "Instalando PHP y modulos adicionales";
         sudo apt install -y php8.1 php-{bcmath,cli,common,curl,dev,gd,imagick,imap,intl,mbstring,mysql,opcache,pgsql,readline,soap,xml,xmlrpc,zip};
         ;;
         0)
@@ -92,11 +92,13 @@ case $os in
         os_id=1; 
         echo "Aprovisionando $os";
         f_os_update;
+        f_install_apache;
     ;;
     Debian | Ubuntu)
         os_id=2; 
         echo "Aprovisionando $os";
         f_os_update;
+        f_install_apache;
     ;;
     *)
         echo "Sistema operativo desconocido";
