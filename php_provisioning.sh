@@ -91,12 +91,12 @@ case $os in
     Fedora | RedHat | CenOS | AlmaLinux | RockiLinux)
         os_id=1; 
         echo "Aprovisionando $os";
-        #f_os_update;
+        f_os_update;
     ;;
     Debian | Ubuntu)
         os_id=2; 
         echo "Aprovisionando $os";
-        #f_os_update;
+        f_os_update;
     ;;
     *)
         echo "Sistema operativo desconocido";
