@@ -9,14 +9,18 @@
 # VARIABLES
 # ------------------------------------------------------------------------------
 declare -a os_distro=( "Fedora" "RedHat" "CenOS" "AlmaLinux" "RockiLinux" "Debian" "Ubuntu");
-declare os;
+#declare os;
 declare os_id=0;
 # ------------------------------------------------------------------------------
 # FUNCIONES
 # ------------------------------------------------------------------------------
 f_os_detect() {
     for i in ${os_distro[@]}; do
-         os=$(cat /etc/*-release | grep "NAME" | grep -o -m1 -i "Fedora");
+        local distro=$(cat /etc/*-release | grep "NAME" | grep -o -m1 -i "$i");
+        if [ ! -z "$distro" ]; then
+            os=$distro;
+            break;
+        fi
     done
 }
 f_os_update() {
@@ -87,12 +91,12 @@ case $os in
     Fedora | RedHat | CenOS | AlmaLinux | RockiLinux)
         os_id=1; 
         echo "Aprovisionando $os";
-        f_os_update;
+        #f_os_update;
     ;;
     Debian | Ubuntu)
         os_id=2; 
         echo "Aprovisionando $os";
-        f_os_update;
+        #f_os_update;
     ;;
     *)
         echo "Sistema operativo desconocido";
