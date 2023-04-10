@@ -10,46 +10,83 @@
 # ------------------------------------------------------------------------------
 declare -a os_distro=( "Fedora" "RedHat" "CenOS" "AlmaLinux" "RockiLinux" "Debian" "Ubuntu");
 declare os;
+declare os_id=0;
 # ------------------------------------------------------------------------------
 # FUNCIONES
 # ------------------------------------------------------------------------------
-function_os_detect(){
+f_os_detect() {
     for i in ${os_distro[@]}; do
-         os=$(cat /etc/*-release | grep "NAME" | grep -o -m1 "Fedora");
+         os=$(cat /etc/*-release | grep "NAME" | grep -o -m1 -i "Fedora");
     done
-} 
+}
+f_os_update() {
+    echo "Actualizando $os";
+    case $os_id in
+        1)
+            sudo dnf upgrade -y;
+        ;;
+        2)
+            sudo apt update && sudo apt upgrade -y;
+        ;;
+        0)
+            echo "Sistema no definido";
+            exit;
+        ;;
+    esac
+}
+f_install_apache() {
+    echo "Instalando Apache en $os";
+    case $os_id in
+        1)
+            sudo dnf install -y httpd;
+        ;;
+        2)
+            sudo apt install -y apache2;
+        ;;
+        0)
+            echo "Sistema no definido";
+            exit;
+        ;;
+    esac
+}
+f_install_php() {
+    echo "Instalando Apache en $os";
+    case $os_id in
+        1)
+            sudo dnf install -y httpd;
+        ;;
+        2)
+        echo "Intalando repositorio Sury para PHP";
+        echo "Paquetes adicionales";
+         sudo apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2;
+        echo "Adicionando repositorio Sury";
+        echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list;
+        echo "Adicionando GPG key";
+        curl -fsSL  https://packages.sury.org/php/apt.gpg| sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg;
+        echo "Instalando PHP y modulos adicionales";
+        sudo apt install -y php8.1 php-{bcmath,cli,common,curl,dev,gd,imagick,imap,intl,mbstring,mysql,opcache,pgsql,readline,soap,xml,xmlrpc,zip};
+        ;;
+        0)
+            echo "Sistema no definido";
+            exit;
+        ;;
+    esac
+}
 # ------------------------------------------------------------------------------
 # SCRIPT
 # ------------------------------------------------------------------------------
-function_os_detect;
+f_os_detect;
 case $os in
     Fedora | RedHat | CenOS | AlmaLinux | RockiLinux)
-         echo "Aprovisionando $os";
-         echo "Actualizando $os";
-         sudo dnf upgrade -y;
-         echo "Instalando Apache en $os";
-         sudo dnf install -y httpd;
+        local os_id=1; 
+        echo "Aprovisionando $os";
     ;;
     Debian | Ubuntu)
-         echo "Aprovisionando $os";
-         echo "Actualizando $os";
-         sudo apt update && sudo apt upgrade -y;
-         echo "Instalando Apache en $os";
-         sudo apt install -y apache2;
-         echo "Intalando repositorio Sury para PHP";
-         echo "Adicionando repositorio Sury";
-         echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list;
-         echo "Adicionando GPG key";
-         curl -fsSL  https://packages.sury.org/php/apt.gpg| sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg;
-         echo "instalando PHP";
-         sudo apt install -y php8.1 php-{bcmath,cli,common,curl,dev,gd,imagick,imap,intl,mbstring,mysql,opcache,pgsql,readline,soap,xml,xmlrpc,zip};
+        local os_id=2; 
+        echo "Aprovisionando $os";
     ;;
     *)
-         echo "Sistema operativo desconocido";
-         exit;
-         echo "Actualizando repositorios";
-         sudo apt update;
-
+        echo "Sistema operativo desconocido";
+        exit;
     ;;
 esac
-
