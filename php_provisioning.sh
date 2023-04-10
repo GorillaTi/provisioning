@@ -53,7 +53,14 @@ f_install_php() {
     echo "Instalando Apache en $os";
     case $os_id in
         1)
-            sudo dnf install -y httpd;
+            echo "Intalando repositorio Remirepo para PHP";
+            echo "Paquetes adicionales";
+            sudo dnf -y install epel-release
+            sudo dnf config-manager --set-enabled powertools
+            sudo dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+            sudo dnf -y makecache
+            sudo dnf -y module reset php
+            sudo yum module install -y php:remi-8.1
         ;;
         2)
         echo "Intalando repositorio Sury para PHP";
@@ -78,12 +85,14 @@ f_install_php() {
 f_os_detect;
 case $os in
     Fedora | RedHat | CenOS | AlmaLinux | RockiLinux)
-        local os_id=1; 
+        os_id=1; 
         echo "Aprovisionando $os";
+        f_os_update;
     ;;
     Debian | Ubuntu)
-        local os_id=2; 
+        os_id=2; 
         echo "Aprovisionando $os";
+        f_os_update;
     ;;
     *)
         echo "Sistema operativo desconocido";
