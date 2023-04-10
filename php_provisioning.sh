@@ -87,21 +87,19 @@ f_install_php() {
 # SCRIPT
 # ------------------------------------------------------------------------------
 f_os_detect;
+echo "Aprovisionando $os";
 case $os in
     Fedora | RedHat | CenOS | AlmaLinux | RockiLinux)
         os_id=1; 
-        echo "Aprovisionando $os";
-        f_os_update;
-        f_install_apache;
     ;;
     Debian | Ubuntu)
         os_id=2; 
-        echo "Aprovisionando $os";
-        f_os_update;
-        f_install_apache;
     ;;
     *)
         echo "Sistema operativo desconocido";
         exit;
     ;;
 esac
+f_os_update;
+f_install_apache;
+#f_install_php
