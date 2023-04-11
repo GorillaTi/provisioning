@@ -102,4 +102,5 @@ case $os in
 esac
 f_os_update;
 f_install_apache;
-f_install_php
+f_install_php;
+f_os_update;
