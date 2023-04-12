@@ -34,6 +34,7 @@ f_os_detect() {
         exit;
     ;;
     esac
+    echo "Sistema Operativo indetificado como: $os"
 }
 f_os_update() {
     echo "Actualizando $os";
@@ -68,31 +69,45 @@ f_install_apache() {
 f_install_php() {
     echo "Instalando Apache en $os";
     case $os_id in
-        1)
+        1) 
             echo "Intalando repositorio Remirepo para PHP";
             echo "Paquetes adicionales";
             sudo dnf -y install epel-release
             sudo dnf config-manager --set-enabled powertools
+            echo "Adicionando repositorio Remirepo" 
             sudo dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
             sudo dnf -y makecache
+            echo "Limpiando  lista de verciones de PHP"
             sudo dnf -y module reset php
+            echo "Instalando PHP"
             sudo yum module install -y php:remi-8.1
         ;;
         2)
             echo "Intalando repositorio Sury para PHP";
             echo "Paquetes adicionales";
             sudo apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2;
+            echo  "Paquetes adicionales instalados con exito"
+            sleep 2;
+            clear;
             if [ ! -f /etc/apt/sources.list.d/sury-php.list ]; then
             echo "Adicionando repositorio Sury";
             echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list;
             echo "Adicionando GPG key";
             curl -fsSL  https://packages.sury.org/php/apt.gpg| sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg;
             sudo apt update;
+            clear;
+            echo "Repositorio Sury instalado con exito"
+            sleep 2;
+            clear;
             else
-                echo "Repositorio Sury ya se encuntra isntalado"
+                echo "Repositorio Sury ya se encuntra instalado"
+                sleep 2;
+                clear;
             fi
             echo "Instalando PHP y modulos adicionales";
             sudo apt install -y php8.1 php8.1-{bcmath,cli,common,curl,dev,gd,imagick,imap,intl,mbstring,mysql,opcache,pgsql,readline,soap,xml,xmlrpc,zip};
+            sleep 2;
+            clear;
         ;;
         0)
             echo "Sistema no definido";
@@ -120,8 +135,16 @@ EOF
 # SCRIPT
 # ------------------------------------------------------------------------------
 f_os_detect;
+sleep 2;
+clear;
 echo "Aprovisionando $os";
 f_os_update;
 f_install_apache;
 f_install_php;
 f_crate_php_test;
+if [ $? == 0 ]; then
+    echo "Instalacion realizada exitosamente"
+else
+    echo "Instalacion NO realizada exitosamente"
+
+fi
