@@ -22,6 +22,18 @@ f_os_detect() {
             break;
         fi
     done
+    case $os in
+        Fedora | RedHat | CenOS | AlmaLinux | RockiLinux)
+            os_id=1; 
+        ;;
+        Debian | Ubuntu)
+            os_id=2; 
+        ;;
+    *)
+        echo "Sistema operativo desconocido";
+        exit;
+    ;;
+    esac
 }
 f_os_update() {
     echo "Actualizando $os";
@@ -85,30 +97,22 @@ f_install_php() {
     esac
 }
 f_crate_php_test() {
-    echo "Creando archivo de prueba de php";
-    cat <<- EOF > test.php
+    echo "Creando archivo de prueba de php"
+    if [ -f $HOME/tets.php ]; then
+        echo "El archivo test.php ya existe"
+    else
+    cat <<- EOF > $HOME/test.php
 <?php
     phpinfo();
 ?>
 EOF
+    fi
 }
 # ------------------------------------------------------------------------------
 # SCRIPT
 # ------------------------------------------------------------------------------
 f_os_detect;
 echo "Aprovisionando $os";
-case $os in
-    Fedora | RedHat | CenOS | AlmaLinux | RockiLinux)
-        os_id=1; 
-    ;;
-    Debian | Ubuntu)
-        os_id=2; 
-    ;;
-    *)
-        echo "Sistema operativo desconocido";
-        exit;
-    ;;
-esac
 f_os_update;
 f_install_apache;
 f_install_php;
