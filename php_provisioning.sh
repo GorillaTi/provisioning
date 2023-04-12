@@ -74,6 +74,7 @@ f_install_php() {
             echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list;
             echo "Adicionando GPG key";
             curl -fsSL  https://packages.sury.org/php/apt.gpg| sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg;
+            sudo apt update;
             echo "Instalando PHP y modulos adicionales";
         sudo apt install -y php8.1 php-{bcmath,cli,common,curl,dev,gd,imagick,imap,intl,mbstring,mysql,opcache,pgsql,readline,soap,xml,xmlrpc,zip};
         ;;
@@ -103,4 +104,3 @@ esac
 f_os_update;
 f_install_apache;
 f_install_php;
-f_os_update;
