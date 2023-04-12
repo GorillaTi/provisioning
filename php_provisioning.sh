@@ -146,5 +146,4 @@ if [ $? == 0 ]; then
     echo "Instalacion realizada exitosamente"
 else
     echo "Instalacion NO realizada exitosamente"
-
 fi
