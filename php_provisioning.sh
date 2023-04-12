@@ -82,13 +82,17 @@ f_install_php() {
             echo "Intalando repositorio Sury para PHP";
             echo "Paquetes adicionales";
             sudo apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2;
+            if [ ! -f /etc/apt/sources.list.d/sury-php.list ]; then
             echo "Adicionando repositorio Sury";
             echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list;
             echo "Adicionando GPG key";
             curl -fsSL  https://packages.sury.org/php/apt.gpg| sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg;
             sudo apt update;
+            else
+                echo "Repositorio Sury ya se encuntra isntalado"
+            fi
             echo "Instalando PHP y modulos adicionales";
-        sudo apt install -y php8.1 php8.1-{bcmath,cli,common,curl,dev,gd,imagick,imap,intl,mbstring,mysql,opcache,pgsql,readline,soap,xml,xmlrpc,zip};
+            sudo apt install -y php8.1 php8.1-{bcmath,cli,common,curl,dev,gd,imagick,imap,intl,mbstring,mysql,opcache,pgsql,readline,soap,xml,xmlrpc,zip};
         ;;
         0)
             echo "Sistema no definido";
@@ -106,6 +110,10 @@ f_crate_php_test() {
     phpinfo();
 ?>
 EOF
+        echo "Creando link simbolico para test.php"
+        sudo  ln -sf $HOME/test.php /var/www/html/
+        echo "Link creado con exito"
+        echo "Probar la instalacion en la IP : http://$(hostname -I | cut -d' ' -f1)/test.php"
     fi
 }
 # ------------------------------------------------------------------------------
