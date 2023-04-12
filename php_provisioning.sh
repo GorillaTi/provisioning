@@ -84,6 +84,14 @@ f_install_php() {
         ;;
     esac
 }
+f_crate_php_test() {
+    echo "Creando archivo de prueba de php";
+    cat <<- EOF > test.php
+<?php
+    phpinfo();
+?>
+EOF
+}
 # ------------------------------------------------------------------------------
 # SCRIPT
 # ------------------------------------------------------------------------------
@@ -104,3 +112,4 @@ esac
 f_os_update;
 f_install_apache;
 f_install_php;
+f_crate_php_test;
