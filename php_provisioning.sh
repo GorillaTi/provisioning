@@ -132,10 +132,15 @@ EOF
     fi
 }
 f_install_composer() {
-    echo "Intalando compose en $so"    
-    case $var in
+    echo "Intalando compose en $os"    
+    case $os_id in
         1)
-            
+            curl -sS https://getcomposer.org/installer -o composer-setup.php
+            echo "Obteniendpo el verificandor del instalador"
+            HASH=`curl -sS https://composer.github.io/installer.sig`
+            echo $HASH
+            echo "Instalando composer"
+            php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
         ;;
         2)
             curl -sS https://getcomposer.org/installer -o composer-setup.php
