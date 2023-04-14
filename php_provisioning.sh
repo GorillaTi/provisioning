@@ -131,6 +131,26 @@ EOF
         echo "Probar la instalacion en la IP : http://$(hostname -I | cut -d' ' -f1)/test.php"
     fi
 }
+f_install_composer() {
+    echo "Intalando compose en $so"    
+    case $var in
+        1)
+            
+        ;;
+        2)
+            curl -sS https://getcomposer.org/installer -o composer-setup.php
+            echo "Obteniendpo el verificandor del instalador"
+            HASH=`curl -sS https://composer.github.io/installer.sig`
+            echo $HASH
+            echo "Instalando composer"
+            php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+        ;;
+        0)
+            echo "Sistema no definido";
+            exit;
+        ;;
+    esac
+}
 # ------------------------------------------------------------------------------
 # SCRIPT
 # ------------------------------------------------------------------------------
