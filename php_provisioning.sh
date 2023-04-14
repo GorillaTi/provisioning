@@ -162,6 +162,7 @@ f_os_update;
 f_install_apache;
 f_install_php;
 f_crate_php_test;
+f_install_composer;
 if [ $? == 0 ]; then
     echo "Instalacion realizada exitosamente"
 else
