@@ -117,16 +117,16 @@ f_install_php() {
 }
 f_crate_php_test() {
     echo "Creando archivo de prueba de php"
-    if [ -f $HOME/tets.php ]; then
+    if [ -f "$HOME/tets.php" ]; then
         echo "El archivo test.php ya existe"
     else
-    cat <<- EOF > $HOME/test.php
+    cat <<- EOF > "$HOME/test.php"
 <?php
     phpinfo();
 ?>
 EOF
         echo "Creando link simbolico para test.php"
-        sudo  ln -sf $HOME/test.php /var/www/html/
+        sudo  ln -sf "$HOME/test.php /var/www/html/"
         echo "Link creado con exito"
         echo "Probar la instalacion en la IP : http://$(hostname -I | cut -d' ' -f1)/test.php"
     fi
@@ -137,8 +137,8 @@ f_install_composer() {
         1)
             curl -sS https://getcomposer.org/installer -o composer-setup.php
             echo "Obteniendpo el verificandor del instalador"
-            HASH=`curl -sS https://composer.github.io/installer.sig`
-            echo $HASH
+            HASH=$(curl -sS https://composer.github.io/installer.sig)
+            echo "$HASH"
             echo "Instalando composer"
             php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
         ;;
@@ -146,8 +146,8 @@ f_install_composer() {
             sudo apt install curl git unzip
             curl -sS https://getcomposer.org/installer -o composer-setup.php
             echo "Obteniendpo el verificandor del instalador"
-            HASH=`curl -sS https://composer.github.io/installer.sig`
-            echo $HASH
+            HASH=$(curl -sS https://composer.github.io/installer.sig)
+            echo "$HASH"
             echo "Instalando composer"
             php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
             sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
@@ -172,7 +172,7 @@ f_install_apache;
 f_install_php;
 f_crate_php_test;
 f_install_composer;
-if [ $? == 0 ]; then
+if [[ $? == 0 ]]; then
     echo "Instalacion realizada exitosamente"
 else
     echo "Instalacion NO realizada exitosamente"
