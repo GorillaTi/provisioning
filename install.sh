@@ -15,7 +15,7 @@
 f_install() {
   local DIR_LOCAL
   DIR_LOCAL="$PWD/provisionings"
-  if [[ -n $DIR_LOCAL ]]; then
+  if [ -n "$DIR_LOCAL" ]; then
     echo "Directorio Provisioning no existe"
   else
     echo "Directorio Provisioning no existe"
