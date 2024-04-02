@@ -15,7 +15,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/GorillaTi/provisioning/mai
 Usando `wget`
 
 ```bash
-sh -c "$(wget  -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/GorillaTi/provisioning/main/provisioning.sh -O -)"
 ```
 
 ### Volver a ejecutar el Script
