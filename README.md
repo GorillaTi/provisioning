@@ -1,18 +1,24 @@
 # Provisioning
 
+Script de Aprovisionamiento para servidores GNU/Linux. el cual reconoce la distribución del Sistema Operativo y conforme a ello da la mejor opción de instalación para solucione requeridas.
+
 ## Instalación
 
-Solo el script principal
+### Usando el Script de instalación
+
+Usando `curl`
 
 ```bash
-curl -o $PWD/provisioning/provisioning.sh https://github.com/GorillaTi/Provisioning/raw/main/provisioning.sh 
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/GorillaTi/provisioning/main/install.sh)"    
 ```
 
-Todo el repositorio
+Usando `wget`
 
 ```bash
-git clone https://github.com/GorillaTi/provisioning.git
+sh -c "$(wget  -O -)"
 ```
+
+### Volver a ejecutar el Script
 
 Ingresamos al directorio `provisioning` 
 
@@ -26,9 +32,8 @@ Ejecutar el script
 ./provisioning
 ```
 
-
-
 ## Scripts de Aprovisionamiento
 
-- Provisionin - Script principal para el aprovisionamiento
+- Provisioning - Script principal para el aprovisionamiento
+- OS_Update- Actualización del Sistema Operativo
 - PHP Provisioning - Script de aprovisionamiento de  php
