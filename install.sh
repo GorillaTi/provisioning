@@ -18,18 +18,23 @@ f_install() {
   local STATUS_LOCAL
   DIR_LOCAL="$PWD/provisioning"
   SCRIPT_LOCAL="provisioning.sh"
+  STATUS_LOCAL=0
 
-  while  [ "$STATUS_LOCAL" == 1 ]; do
-    if [ -n "$DIR_LOCAL" ]; then
+  while  [ $STATUS_LOCAL -le 0 ]; do
+    if [ ! -d "$DIR_LOCAL" ]; then
       echo "Directorio Provisioning no existe"
       mkdir -p "$DIR_LOCAL"
+      echo "Directorio provisioning Creado"
       STATUS_LOCAL=0
     else
       echo "Directorio Provisioning si existe"
       if [ ! -f "$DIR_LOCAL/$SCRIPT_LOCAL" ]; then
-        curl -o "$DIR_LOCAL/$SCRIPT_LOCAL https://github.com/GorillaTi/Provisioning/raw/main/provisioning.sh"
+        echo "Archivo $SCRIPT_LOCAL no existe"
+        curl -o "$DIR_LOCAL/$SCRIPT_LOCAL" https://raw.githubusercontent.com/GorillaTi/provisioning/main/provisioning.sh && \
+        chmod 754 "$DIR_LOCAL/$SCRIPT_LOCAL"
         STATUS_LOCAL=0
       else
+        echo "Archivo $SCRIPT_LOCAL si existe"
         sh -c "($DIR_LOCAL/$SCRIPT_LOCAL)"
         STATUS_LOCAL=1
       fi
