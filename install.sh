@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Autor: Edmundo Cespedes A.
 # Licencia: GNU GPLv2
 # Nombre: Install Provisioning
